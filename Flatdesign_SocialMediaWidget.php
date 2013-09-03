@@ -35,21 +35,19 @@ class Flatdesign_SocialMediaWidget extends WP_Widget {
 		// get title values
 		$title = apply_filters( 'widget_title', $instance['title'] );
 
-		echo $args['before_widget'];
 		if ( ! empty( $title ) )
-			echo $args['before_title'] . $title . $args['after_title'];
-
+			echo $args['before_widget'] . $args['before_title'] . $title . $args['after_title'] . $args['after_widget'];
+	
 		for ($i = 0; $i < 4; $i++) {
 			if (isset($instance['button_'.$i.'_url']) && isset($instance['button_'.$i.'_icon'])) {
-		?>
-			<div class="sixcol clearfix <? echo ($i%2 == 0) ? 'first' : ''?>  ">
-				<a href="<? echo $instance['button_'.$i.'_url'] ?>"><img src="<? echo $plugin_dir."icons/".$instance['button_'.$i.'_icon'] ?>"></img></a>
-			</div>
-		<?php
+			?>
+				<div id="flatdesign_social-media-widget-button-<? echo $i ?>" class="widget widget_flatdesign_social-media-widget sixcol clearfix <? echo ($i%2 == 0) ? 'first' : ''?>  ">
+					<a href="<? echo $instance['button_'.$i.'_url'] ?>"><img src="<? echo $plugin_dir."icons/".$instance['button_'.$i.'_icon'] ?>"></img></a>
+				</div>
+			<?php
 			}
 		}
 
-		echo $args['after_widget'];
 	}
 
 	/**
