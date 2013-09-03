@@ -15,8 +15,8 @@ class Flatdesign_SocialMediaWidget extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			'flatdesign_social-media-widget', // Base ID
-			'Flatdesign_SocialMediaWidget', // Name
-			array( 'description' => __( 'Flatdesign_SocialMediaWidget Description', 'flatdesign-sm' ), ) // Args
+			'Social Media Widget', // Name
+			array( 'description' => __( 'Widget for flatdesign theme. Supports Facebook, GooglePlus, Twitter and RSS', 'flatdesign-sm' ), ) // Args
 		);
 	}
 
@@ -32,12 +32,6 @@ class Flatdesign_SocialMediaWidget extends WP_Widget {
 		$plugin_dir = plugin_dir_url( __FILE__ );
 		wp_enqueue_style("flatdesign-sm-css", $plugin_dir."flatdesign-sm.css"); 
 
-		// get title values
-		$title = apply_filters( 'widget_title', $instance['title'] );
-
-		if ( ! empty( $title ) )
-			echo $args['before_widget'] . $args['before_title'] . $title . $args['after_title'] . $args['after_widget'];
-	
 		for ($i = 0; $i < 4; $i++) {
 			if (isset($instance['button_'.$i.'_url']) && isset($instance['button_'.$i.'_icon'])) {
 			?>
@@ -47,7 +41,6 @@ class Flatdesign_SocialMediaWidget extends WP_Widget {
 			<?php
 			}
 		}
-
 	}
 
 	/**
@@ -71,12 +64,6 @@ class Flatdesign_SocialMediaWidget extends WP_Widget {
 			$icon_paths[] = $icon_path;
 
 		}
-		var_dump($icon_paths);
-
-		// get title values
-		$title = isset($instance['title'])
-			? $instance[ 'title' ]
-			: __( 'New title', 'flatdesign-sm' );
 
 		// get all button values
 		$button_urls = array();
@@ -90,36 +77,29 @@ class Flatdesign_SocialMediaWidget extends WP_Widget {
 				: "";
 		}
 
+		for ($i = 0; $i < 4; $i++) {
+			$name_url = 'button_'.$i.'_url';
+			$name_icon = 'button_'.$i.'_icon';
 		?>
-		<p>
-		<label for="<?php echo $this->get_field_name( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
-		<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
-		</p>
-
-		<?php 
-			for ($i = 0; $i < 4; $i++) {
-				$name_url = 'button_'.$i.'_url';
-				$name_icon = 'button_'.$i.'_icon';
-		?>
-				<p>
-				<label for="<?php echo $this->get_field_name( $name_url ); ?>"><?php _e( 'URL '.($i+1).':' ); ?></label> 
-				<input class="widefat" id="<?php echo $this->get_field_id( $name_url ); ?>" name="<?php echo $this->get_field_name( $name_url ); ?>" type="text" value="<?php echo esc_attr( $button_urls[$i] ); ?>" />
-				</p>
-				<p>
-				<label for="<?php echo $this->get_field_name( $name_icon ); ?>"><?php _e( 'Icon '.($i+1).':' ); ?></label> 
-				<select class="widefat" id="<?php echo $this->get_field_id( $name_icon ); ?>" name="<?php echo $this->get_field_name( $name_icon ); ?>" >
-					<option value=""><?php _e( 'Select Icon' ); ?></option>
-					<?php 
-					foreach ($icon_paths as $icon_path) {
-					?>
-						<option <?php if ($button_icons[$i] == $icon_path) echo 'selected="selected"' ?> value="<?php echo $icon_path; ?>"><?php echo $icon_path; ?></option>
-					<?php
-					}
-					?>
-				</select> 
-				</p>
+			<p>
+			<label for="<?php echo $this->get_field_name( $name_url ); ?>"><?php _e( 'URL '.($i+1).':' ); ?></label> 
+			<input class="widefat" id="<?php echo $this->get_field_id( $name_url ); ?>" name="<?php echo $this->get_field_name( $name_url ); ?>" type="text" value="<?php echo esc_attr( $button_urls[$i] ); ?>" />
+			</p>
+			<p>
+			<label for="<?php echo $this->get_field_name( $name_icon ); ?>"><?php _e( 'Icon '.($i+1).':' ); ?></label> 
+			<select class="widefat" id="<?php echo $this->get_field_id( $name_icon ); ?>" name="<?php echo $this->get_field_name( $name_icon ); ?>" >
+				<option value=""><?php _e( 'Select Icon' ); ?></option>
+				<?php 
+				foreach ($icon_paths as $icon_path) {
+				?>
+					<option <?php if ($button_icons[$i] == $icon_path) echo 'selected="selected"' ?> value="<?php echo $icon_path; ?>"><?php echo $icon_path; ?></option>
+				<?php
+				}
+				?>
+			</select> 
+			</p>
 		<?php
-			}
+		}
 		?>
 		
 		<?php 
@@ -137,9 +117,6 @@ class Flatdesign_SocialMediaWidget extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
-		$instance['title'] = ( ! empty( $new_instance['title'] ) ) 
-			? strip_tags( $new_instance['title'] ) 
-			: '';
 
 		for ($i = 0; $i < 4; $i++) { 
 			$instance['button_'.$i.'_url'] = ( ! empty( $new_instance['button_'.$i.'_url'] ) ) 
