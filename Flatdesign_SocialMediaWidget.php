@@ -30,7 +30,9 @@ class Flatdesign_SocialMediaWidget extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 		$plugin_dir = plugin_dir_url( __FILE__ );
-		wp_enqueue_style("flatdesign-sm-css", $plugin_dir."flatdesign-sm.css"); 
+		wp_enqueue_style("flatdesign-sm-css", $plugin_dir."flatdesign-sm.css");
+
+        echo '<div class="clearfix">';
 
 		for ($i = 0; $i < 4; $i++) {
 			if (isset($instance['button_'.$i.'_url']) && isset($instance['button_'.$i.'_icon'])) {
@@ -41,6 +43,8 @@ class Flatdesign_SocialMediaWidget extends WP_Widget {
 			<?php
 			}
 		}
+
+        echo '</div>';
 	}
 
 	/**
